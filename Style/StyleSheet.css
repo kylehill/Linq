@@ -1,0 +1,38 @@
+﻿body
+{
+    font-family:Sans-Serif;
+    font-size:0.9em;
+}
+
+a
+{
+    text-decoration:none;
+    color:#36f;
+}
+
+.messageText
+{
+    color:Red;
+}
+
+#loginBox
+{
+    
+}
+
+#chatBox
+{   
+    display:none;  
+}
+
+#chatLines
+{
+    max-height:600px;
+    overflow:auto;
+    border:1px solid Blue;
+}
+
+#txtChatSubmission
+{
+    width:400px;
+}

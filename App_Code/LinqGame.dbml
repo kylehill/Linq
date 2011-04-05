@@ -1,0 +1,173 @@
+﻿<?xml version="1.0" encoding="utf-8"?><Database Name="KHGames" Class="LinqGameDataContext" xmlns="http://schemas.microsoft.com/linqtosql/dbml/2007">
+  <Connection Mode="WebSettings" ConnectionString="Data Source=oak.arvixe.com;Initial Catalog=KHGames;Persist Security Info=True;User ID=kylehill" SettingsObjectName="System.Configuration.ConfigurationManager.ConnectionStrings" SettingsPropertyName="KHGamesConnectionString" Provider="System.Data.SqlClient" />
+  <Table Name="kylehill.LinqGamePlayers" Member="LinqGamePlayers">
+    <Type Name="LinqGamePlayer">
+      <Column Name="GamePlayerID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GameID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsJoined" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="LinqGamePlayer_LinqRoundGuess" Member="LinqRoundGuesses" ThisKey="GamePlayerID" OtherKey="GuessedPlayerID" Type="LinqRoundGuess" />
+      <Association Name="LinqGamePlayer_LinqRoundResult" Member="LinqRoundResults" ThisKey="GamePlayerID" OtherKey="PlayerID" Type="LinqRoundResult" />
+      <Association Name="LinqGamePlayer_LinqSeriesRound" Member="LinqSeriesRounds" ThisKey="GamePlayerID" OtherKey="WaitingOnPlayer" Type="LinqSeriesRound" />
+      <Association Name="LinqGamePlayer_LinqSeriesScore" Member="LinqSeriesScores" ThisKey="GamePlayerID" OtherKey="GamePlayerID" Type="LinqSeriesScore" />
+      <Association Name="LinqGamePlayer_LinqSeriesSpy" Member="LinqSeriesSpies" ThisKey="GamePlayerID" OtherKey="SpyPlayerID" Type="LinqSeriesSpy" />
+      <Association Name="User_LinqGamePlayer" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+      <Association Name="LinqGame_LinqGamePlayer" Member="LinqGame" ThisKey="GameID" OtherKey="GameID" Type="LinqGame" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.Users" Member="Users">
+    <Type Name="User">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Nickname" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="Email" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="VerificationToken" Type="System.String" DbType="VarChar(64) NOT NULL" CanBeNull="false" />
+      <Column Name="JoinDate" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsAdmin" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="User_LinqGamePlayer" Member="LinqGamePlayers" ThisKey="UserID" OtherKey="UserID" Type="LinqGamePlayer" />
+      <Association Name="User_LinqGame" Member="LinqGames" ThisKey="UserID" OtherKey="CreatorUserID" Type="LinqGame" />
+      <Association Name="User_Preference" Member="Preferences" ThisKey="UserID" OtherKey="UserID" Type="Preference" />
+      <Association Name="User_LinqGameChat" Member="LinqGameChats" ThisKey="UserID" OtherKey="UserID" Type="LinqGameChat" />
+      <Association Name="User_UserSession" Member="UserSessions" ThisKey="UserID" OtherKey="UserID" Type="UserSession" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqGames" Member="LinqGames">
+    <Type Name="LinqGame">
+      <Column Name="GameID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="PlayToScore" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="PlayToRounds" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="Limit" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="DateCreated" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="DateFinished" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Column Name="DateLastAction" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="IsStarted" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="IsFinished" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="CreatorUserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="LinqGame_LinqGamePlayer" Member="LinqGamePlayers" ThisKey="GameID" OtherKey="GameID" Type="LinqGamePlayer" />
+      <Association Name="LinqGame_LinqGameSeries" Member="LinqGameSeries" ThisKey="GameID" OtherKey="GameID" Type="LinqGameSeries" />
+      <Association Name="LinqGame_LinqGameChat" Member="LinqGameChats" ThisKey="GameID" OtherKey="GameID" Type="LinqGameChat" />
+      <Association Name="User_LinqGame" Member="User" ThisKey="CreatorUserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqGameSeries" Member="LinqGameSeries">
+    <Type Name="LinqGameSeries">
+      <Column Name="SeriesID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GameID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="WordID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsFinished" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="LinqGameSeries_LinqSeriesRound" Member="LinqSeriesRounds" ThisKey="SeriesID" OtherKey="SeriesID" Type="LinqSeriesRound" />
+      <Association Name="LinqGameSeries_LinqSeriesScore" Member="LinqSeriesScores" ThisKey="SeriesID" OtherKey="SeriesID" Type="LinqSeriesScore" />
+      <Association Name="LinqGameSeries_LinqSeriesSpy" Member="LinqSeriesSpies" ThisKey="SeriesID" OtherKey="SeriesID" Type="LinqSeriesSpy" />
+      <Association Name="LinqGame_LinqGameSeries" Member="LinqGame" ThisKey="GameID" OtherKey="GameID" Type="LinqGame" IsForeignKey="true" />
+      <Association Name="LinqWord_LinqGameSeries" Member="LinqWord" ThisKey="WordID" OtherKey="WordID" Type="LinqWord" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqRoundGuesses" Member="LinqRoundGuesses">
+    <Type Name="LinqRoundGuess">
+      <Column Name="ResultID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GuessedPlayerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="LinqGamePlayer_LinqRoundGuess" Member="LinqGamePlayer" ThisKey="GuessedPlayerID" OtherKey="GamePlayerID" Type="LinqGamePlayer" IsForeignKey="true" />
+      <Association Name="LinqRoundResult_LinqRoundGuess" Member="LinqRoundResult" ThisKey="ResultID" OtherKey="ResultID" Type="LinqRoundResult" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqRoundResults" Member="LinqRoundResults">
+    <Type Name="LinqRoundResult">
+      <Column Name="ResultID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="RoundID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PlayerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsActive" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="SubmittedClue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Column Name="IsGuessed" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="LinqRoundResult_LinqRoundGuess" Member="LinqRoundGuesses" ThisKey="ResultID" OtherKey="ResultID" Type="LinqRoundGuess" />
+      <Association Name="LinqGamePlayer_LinqRoundResult" Member="LinqGamePlayer" ThisKey="PlayerID" OtherKey="GamePlayerID" Type="LinqGamePlayer" IsForeignKey="true" />
+      <Association Name="LinqSeriesRound_LinqRoundResult" Member="LinqSeriesRound" ThisKey="RoundID" OtherKey="RoundID" Type="LinqSeriesRound" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqSeriesRound" Member="LinqSeriesRounds">
+    <Type Name="LinqSeriesRound">
+      <Column Name="RoundID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SeriesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="IsFinished" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="WaitingOnPlayer" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Association Name="LinqSeriesRound_LinqRoundResult" Member="LinqRoundResults" ThisKey="RoundID" OtherKey="RoundID" Type="LinqRoundResult" />
+      <Association Name="LinqGameSeries_LinqSeriesRound" Member="LinqGameSeries" Storage="_LinqGameSery" ThisKey="SeriesID" OtherKey="SeriesID" Type="LinqGameSeries" IsForeignKey="true" />
+      <Association Name="LinqGamePlayer_LinqSeriesRound" Member="LinqGamePlayer" ThisKey="WaitingOnPlayer" OtherKey="GamePlayerID" Type="LinqGamePlayer" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqSeriesScores" Member="LinqSeriesScores">
+    <Type Name="LinqSeriesScore">
+      <Column Name="SeriesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="GamePlayerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="Score" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="LinqGamePlayer_LinqSeriesScore" Member="LinqGamePlayer" ThisKey="GamePlayerID" OtherKey="GamePlayerID" Type="LinqGamePlayer" IsForeignKey="true" />
+      <Association Name="LinqGameSeries_LinqSeriesScore" Member="LinqGameSeries" Storage="_LinqGameSery" ThisKey="SeriesID" OtherKey="SeriesID" Type="LinqGameSeries" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqSeriesSpies" Member="LinqSeriesSpies">
+    <Type Name="LinqSeriesSpy">
+      <Column Name="SeriesID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SpyPlayerID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Association Name="LinqGamePlayer_LinqSeriesSpy" Member="LinqGamePlayer" ThisKey="SpyPlayerID" OtherKey="GamePlayerID" Type="LinqGamePlayer" IsForeignKey="true" />
+      <Association Name="LinqGameSeries_LinqSeriesSpy" Member="LinqGameSeries" Storage="_LinqGameSery" ThisKey="SeriesID" OtherKey="SeriesID" Type="LinqGameSeries" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqWords" Member="LinqWords">
+    <Type Name="LinqWord">
+      <Column Name="WordID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="Word" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="IsRemoved" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Association Name="LinqWord_LinqGameSeries" Member="LinqGameSeries" ThisKey="WordID" OtherKey="WordID" Type="LinqGameSeries" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.Options" Member="Options">
+    <Type Name="Option">
+      <Column Name="OptionID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SettingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SettingText" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Association Name="Option_Preference" Member="Preferences" ThisKey="OptionID" OtherKey="OptionID" Type="Preference" />
+      <Association Name="Setting_Option" Member="Setting" ThisKey="SettingID" OtherKey="SettingID" Type="Setting" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.Preferences" Member="Preferences">
+    <Type Name="Preference">
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="SettingID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="OptionID" Type="System.Int32" DbType="Int" CanBeNull="true" />
+      <Column Name="PreferenceValue" Type="System.String" DbType="VarChar(50)" CanBeNull="true" />
+      <Association Name="Option_Preference" Member="Option" ThisKey="OptionID" OtherKey="OptionID" Type="Option" IsForeignKey="true" />
+      <Association Name="User_Preference" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+      <Association Name="Setting_Preference" Member="Setting" ThisKey="SettingID" OtherKey="SettingID" Type="Setting" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.Settings" Member="Settings">
+    <Type Name="Setting">
+      <Column Name="SettingID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="SettingCode" Type="System.String" DbType="VarChar(50) NOT NULL" CanBeNull="false" />
+      <Column Name="SettingTitle" Type="System.String" DbType="VarChar(200) NOT NULL" CanBeNull="false" />
+      <Column Name="HasOptions" Type="System.Boolean" DbType="Bit NOT NULL" CanBeNull="false" />
+      <Column Name="MultiSelectOptions" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="Setting_Option" Member="Options" ThisKey="SettingID" OtherKey="SettingID" Type="Option" />
+      <Association Name="Setting_Preference" Member="Preferences" ThisKey="SettingID" OtherKey="SettingID" Type="Preference" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.LinqGameChat" Member="LinqGameChats">
+    <Type Name="LinqGameChat">
+      <Column Name="ChatLineID" Type="System.Int32" DbType="Int NOT NULL IDENTITY" IsPrimaryKey="true" IsDbGenerated="true" CanBeNull="false" />
+      <Column Name="GameID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="PostedAt" Type="System.DateTime" DbType="DateTime NOT NULL" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ChatText" Type="System.String" DbType="VarChar(500) NOT NULL" CanBeNull="false" />
+      <Column Name="IsExCathedra" Type="System.Boolean" DbType="Bit" CanBeNull="true" />
+      <Association Name="LinqGame_LinqGameChat" Member="LinqGame" ThisKey="GameID" OtherKey="GameID" Type="LinqGame" IsForeignKey="true" />
+      <Association Name="User_LinqGameChat" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+  <Table Name="kylehill.UserSessions" Member="UserSessions">
+    <Type Name="UserSession">
+      <Column Name="SessionToken" Type="System.String" DbType="VarChar(50) NOT NULL" IsPrimaryKey="true" CanBeNull="false" />
+      <Column Name="UserID" Type="System.Int32" DbType="Int NOT NULL" CanBeNull="false" />
+      <Column Name="ExpiresOn" Type="System.DateTime" DbType="DateTime" CanBeNull="true" />
+      <Association Name="User_UserSession" Member="User" ThisKey="UserID" OtherKey="UserID" Type="User" IsForeignKey="true" />
+    </Type>
+  </Table>
+</Database>

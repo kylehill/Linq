@@ -1,0 +1,29 @@
+﻿<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title></title>
+    <link href="Style/StyleSheet.css" rel="stylesheet" type="text/css" />
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js" type="text/javascript"></script>
+    <script src="Script/Linq.js" type="text/javascript"></script>
+</head>
+<body>
+    <div id="loginBox">
+        <div id="loginEmail">
+            email: <input type="text" class="textEmail" id="txtEmail" />
+        </div>
+        <div id="loginPass">
+            password: <input type="text" class="textPass" id="txtPassword" />
+        </div>
+        <a href="#" onclick="login();">login</a> | <a href="#" onclick="create();">register</a><br />
+        <span class="messageText" id="loginText"></span>
+    </div>
+
+    <div id="chatBox">
+        <div id="chatLines">
+            
+        </div>
+        <input id="txtChatSubmission" type="text" onkeyup="checkForEnter(event);" /> <button id="btnEnterChat" onclick="enterChat();">Say</button> | <span id="loggedInAsText"></span>
+    </div>
+</body>
+</html>
